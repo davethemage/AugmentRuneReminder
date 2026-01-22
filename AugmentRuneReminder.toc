@@ -1,0 +1,9 @@
+## Interface: 120000
+## Title: AugmentRuneReminder
+## Notes: Shows a clickable frame if Augment Rune buff is missing
+## Author: Davethemage
+## Version: 1.0
+## SavedVariables: AugmentRuneReminderDB
+## IconTexture: Interface\AddOns\AugmentRuneReminder\images\icon
+AugmentRuneReminder.lua
+AugmentRuneReminder.xml
