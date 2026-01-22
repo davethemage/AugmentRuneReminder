@@ -18,9 +18,6 @@ local defaults = {
 local BUFF_ID = 1234969
 local ITEM_ID = 243191
 
--- Timestamp for approximate buff tracking
-local lastRuneUse = 0
-
 ------------------------------------------------
 -- OnInitialize
 ------------------------------------------------
@@ -75,7 +72,6 @@ function AugmentRuneReminder:CreateButton()
 
     -- PostClick
     self.button:SetScript("PostClick", function()
-        lastRuneUse = GetTime()
         if not InCombatLockdown() then
             self.button:Hide()
             self.text:Hide()
@@ -96,9 +92,8 @@ end
 function AugmentRuneReminder:OnSpellcastSucceeded(event, unit, _, spellID)
     if unit ~= "player" then return end
     if spellID == ITEM_ID then
-        lastRuneUse = GetTime()
+        self:UpdateVisibility()
     end
-    self:UpdateVisibility()
 end
 
 ------------------------------------------------
@@ -114,7 +109,7 @@ function AugmentRuneReminder:ItemReady()
 end
 
 function AugmentRuneReminder:HasBuff()
-    if InCombatLockdown() then
+    if InCombatLockdown() or UnitIsDeadOrGhost("player") then
         -- Do not call in combat
         return false
     end
@@ -133,7 +128,7 @@ end
 -- Update visibility (out of combat)
 ------------------------------------------------
 function AugmentRuneReminder:UpdateVisibility()
-    if InCombatLockdown() then return end
+    if InCombatLockdown() or UnitIsDeadOrGhost("player") then return end
 
     local shouldShow = UnitExists("player") and not self:HasBuff() and self:ItemExists() and self:ItemReady()
     local isShown = self.button:IsShown()
