@@ -1,7 +1,7 @@
 local addonName, Addon = ...
 local shortName = "ARR"
 local longName = "Augment Rune Reminder"
-local version = "1.0.1"
+local version = "1.0.2"
 local AugmentRuneReminder = LibStub("AceAddon-3.0"):NewAddon(
     Addon,
     addonName,

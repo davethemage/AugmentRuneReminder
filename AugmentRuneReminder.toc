@@ -2,7 +2,7 @@
 ## Title: AugmentRuneReminder
 ## Notes: Shows a clickable frame if Augment Rune buff is missing
 ## Author: Davethemage
-## Version: 1.0.1
+## Version: 1.0.2
 ## SavedVariables: AugmentRuneReminderDB
 ## IconTexture: Interface\AddOns\AugmentRuneReminder\images\icon.tga
 
