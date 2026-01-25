@@ -1,5 +1,7 @@
 local addonName, Addon = ...
-
+local shortName = "ARR"
+local longName = "Augment Rune Reminder"
+local version = "1.0.1"
 local AugmentRuneReminder = LibStub("AceAddon-3.0"):NewAddon(
     Addon,
     addonName,
@@ -37,13 +39,15 @@ function AugmentRuneReminder:OnInitialize()
     self:SetupOptions()
     self:CreateButton()
 
-    self:RegisterChatCommand("arr", "OpenOptions")
+    self:RegisterChatCommand(shortName:lower(), "OpenOptions")
 
     self:RegisterEvent("PLAYER_LOGIN", "ScheduleUpdate")
     self:RegisterEvent("UNIT_AURA", "OnUnitAura")
     self:RegisterEvent("BAG_UPDATE_DELAYED", "ScheduleUpdate")
     self:RegisterEvent("SPELL_UPDATE_COOLDOWN", "ScheduleUpdate")
     self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "OnSpellcastSucceeded")
+    -- print out status
+    DEFAULT_CHAT_FRAME:AddMessage("|cff00ff00["..shortName.."]|r ".. longName .." v".. version .. " - |cff00ff00/".. shortName:lower() .. "|r")
 end
 
 -- Debounced update
