@@ -1,31 +1,53 @@
 local addonName, AugmentRuneReminder = ...
 
 function AugmentRuneReminder:CreateButton()
-    local button = CreateFrame("Button", "AugmentRuneReminder_Button", UIParent, "SecureActionButtonTemplate")
-    button:SetSize(40, 40)
-    button:SetPoint("CENTER", UIParent, "CENTER", self.db.profile.posX, self.db.profile.posY)
-    button:SetAttribute("type", "item")
-    button:SetAttribute("item", "item:" .. self.ITEM_ID)
+    local button = CreateFrame(
+        "Button",
+        "AugmentRuneReminder_Button",
+        UIParent,
+        "SecureActionButtonTemplate"
+    )
+
     self.button = button
 
+    button:SetSize(40, 40)
+    button:SetPoint("CENTER", UIParent, "CENTER",
+        self.db.profile.posX,
+        self.db.profile.posY
+    )
+
+    button:RegisterForClicks("AnyUp")
+
+    -- Secure attributes
+    button:SetAttribute("type", "item")
+    button:SetAttribute("item", "item:" .. AugmentRuneReminder.ITEM_ID)
+    -- Fallback: secure macro (more resilient)
+    button:SetAttribute("macrotext", "/use item:" .. AugmentRuneReminder.ITEM_ID)
     -- Icon
     local icon = button:CreateTexture(nil, "ARTWORK")
     icon:SetAllPoints()
-    icon:SetTexture(GetItemIcon(self.ITEM_ID))
+    icon:SetTexture(GetItemIcon(AugmentRuneReminder.ITEM_ID))
     button.icon = icon
 
     -- Text
     local text = UIParent:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     text:SetPoint("TOP", button, "BOTTOM", 0, -6)
     text:SetText("Rune missing!")
-    if not self.db.profile.showText then text:Hide() end
     self.text = text
 
-    button:HookScript("OnShow", function() if self.db.profile.showText then text:Show() end end)
-    button:HookScript("OnHide", function() text:Hide() end)
+    if not self.db.profile.showText then
+        text:Hide()
+    end
 
-    button:Hide()
-    text:Hide()
+    button:HookScript("OnShow", function()
+        if self.db.profile.showText then
+            text:Show()
+        end
+    end)
+
+    button:HookScript("OnHide", function()
+        text:Hide()
+    end)
 
     RegisterStateDriver(button, "visibility", "[combat][dead] hide;")
 
@@ -35,7 +57,11 @@ function AugmentRuneReminder:CreateButton()
             text:Hide()
         end
     end)
+
+    button:Hide()
+    text:Hide()
 end
+
 
 function AugmentRuneReminder:UpdateReminder()
     if not self:IsSafe() then return end
