@@ -1,7 +1,7 @@
 local addonName, AugmentRuneReminder = ...
 local shortName = "ARR"
 local longName = "Augment Rune Reminder"
-local version = "1.0.3"
+local version = "1.0.4"
 
 AugmentRuneReminder.addon = LibStub("AceAddon-3.0"):NewAddon(
     addonName,
@@ -10,7 +10,6 @@ AugmentRuneReminder.addon = LibStub("AceAddon-3.0"):NewAddon(
 )
 
 local addon = AugmentRuneReminder.addon
-
 local L = LibStub("AceLocale-3.0"):GetLocale("AugmentRuneReminder", true)
 
 -- Constants
@@ -24,6 +23,11 @@ AugmentRuneReminder.defaults = {
         showText = true,
         posX = 0,
         posY = 200,
+        buttonGlow = false,
+        text = "Rune missing!",
+        fontName = "Friz Quadrata TT",
+        fontSize = 16,
+        buttonSize = 40,
     }
 }
 
@@ -94,4 +98,7 @@ end
 -- Unit aura handler
 function addon:OnUnitAura(_, unit)
     if unit == "player" then self:ScheduleUpdate() end
+end
+function addon:OpenOptions()
+    LibStub("AceConfigDialog-3.0"):Open("AugmentRuneReminder")
 end

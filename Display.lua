@@ -1,4 +1,5 @@
 local addonName, AugmentRuneReminder = ...
+local LSM = LibStub("LibSharedMedia-3.0")
 
 function AugmentRuneReminder:CreateButton()
     local button = CreateFrame(
@@ -10,7 +11,8 @@ function AugmentRuneReminder:CreateButton()
 
     self.button = button
 
-    button:SetSize(40, 40)
+    local size = self.db.profile.buttonSize or 40
+    button:SetSize(size, size)
     button:SetPoint("CENTER", UIParent, "CENTER",
         self.db.profile.posX,
         self.db.profile.posY
@@ -31,8 +33,11 @@ function AugmentRuneReminder:CreateButton()
 
     -- Text
     local text = UIParent:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+    if self.db.profile.fontName then
+        text:SetFont(LSM:Fetch("font", self.db.profile.fontName), self.db.profile.fontSize or 16, "OUTLINE")
+    end
     text:SetPoint("TOP", button, "BOTTOM", 0, -6)
-    text:SetText("Rune missing!")
+    text:SetText(self.db.profile.text or "Rune missing!")
     self.text = text
 
     if not self.db.profile.showText then
@@ -57,6 +62,13 @@ function AugmentRuneReminder:CreateButton()
             text:Hide()
         end
     end)
+
+    --Button glow
+    if self.db.profile.buttonGlow or false then
+        LibStub("LibButtonGlow-1.0").ShowOverlayGlow(self.button)
+    else
+        LibStub("LibButtonGlow-1.0").HideOverlayGlow(self.button)
+    end
 
     button:Hide()
     text:Hide()
